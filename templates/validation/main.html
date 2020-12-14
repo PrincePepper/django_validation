@@ -13,11 +13,11 @@
 {% block content %}
     <div>
         <form novalidate>
-            <div>
-                <div class="alert alert-success" role="alert">
-                    Вы успешно зарегистрировались!
-                </div>
+            <div class="alert alert-success" role="alert">
+                Вы успешно зарегистрировались!
+            </div>
 
+            <div id="step-1">
                 <div class="form-group">
                     <label for="name">Ваше имя</label>
                     <input id="name" class="form-control" type="text">
@@ -38,54 +38,56 @@
                     <div class="invalid-feedback">{{ reqText }}</div>
                     <div class="invalid-feedback">Пожалуйста введите Email адрес</div>
                 </div>
+            </div>
+            <div class="form-group">
+                <label for="year">Год рождения</label>
+
+                <select id="year" class="custom-select">
+                    <option disabled value="">Выберите</option>
+                </select>
+
+                <div class="invalid-feedback">{{ reqText }}</div>
+            </div>
+
+            <button id="btn-step1" class="btn btn-primary" type="button" onclick="toggle_visibility('step-1',true)">
+                Следующий шаг
+            </button>
+            <div id="step-2">
+                <div class="form-group">
+                    <label for="career">Профессия</label>
+                    <input id="career" class="form-control" placeholder="Например, Frontend" type="text">
+                    <div class="invalid-feedback">{{ alphaText }}</div>
+                </div>
 
                 <div class="form-group">
-                    <label for="year">Год рождения</label>
-
-                    <select id="year" class="custom-select">
-                        <option disabled value="">Выберите</option>
-                    </select>
-
+                    <label for="career">Описание</label>
+                    <label>
+                        <textarea placeholder="О себе"></textarea>
+                    </label>
                     <div class="invalid-feedback">{{ reqText }}</div>
                 </div>
 
-                <button class="btn btn-primary" type="button">Следующий шаг</button>
-            </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input id="password" class="form-control" type="text">
 
-            <div class="form-group">
-                <label for="career">Профессия</label>
-                <input id="career" class="form-control" placeholder="Например, Frontend" type="text">
-                <div class="invalid-feedback">{{ alphaText }}</div>
-            </div>
-
-            <div class="form-group">
-                <label for="career">Описание</label>
-                <label>
-                    <textarea placeholder="О себе"></textarea>
-                </label>
-                <div class="invalid-feedback">{{ reqText }}</div>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Пароль</label>
-                <input id="password" class="form-control" type="text">
-
-                <div class="invalid-feedback">{{ reqText }}</div>
-                <div class="invalid-feedback">{{ minLengthText }}
+                    <div class="invalid-feedback">{{ reqText }}</div>
+                    <div class="invalid-feedback">{{ minLengthText }}
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="passwordConfirm">Подтверждение пароля</label>
+                <div class="form-group">
+                    <label for="passwordConfirm">Подтверждение пароля</label>
 
-                <input id="passwordConfirm" class="form-control" type="text">
+                    <input id="passwordConfirm" class="form-control" type="text">
 
-                <div class="invalid-feedback">{{ passwordConfirmText }}
+                    <div class="invalid-feedback">{{ passwordConfirmText }}
+                    </div>
                 </div>
             </div>
 
             <button class="btn btn-light mr-2" type="button">Назад</button>
-            <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+            <button id="btn-step2" class="btn btn-primary" type="submit">Зарегистрироваться</button>
 
         </form>
     </div>
@@ -96,3 +98,4 @@
         <p>Copyright &copy; <a href="">Semen Sereda</a></p>
     </div>
 {% endblock %}
+
