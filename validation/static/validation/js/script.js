@@ -10,9 +10,12 @@ function next_step(id_old, id_next) {
 
     let form = document.getElementsByClassName('needs-validation');
     Array.prototype.filter.call(form, function () {
-        jQuery.validator.addMethod("selectnic", function (value, element) {
-            return !/^[0-9]{9}[vVxX]$/.test(value);
-        }, "wrong nic number");
+        jQuery.validator.addMethod("letteronly", function (value, element) {
+            let regex = new RegExp("[.,\/#!$%\^&\*;:{}=\-_`~()0-9]+$");
+            let key = value;
+            return regex.test(key);
+
+        }, "please use only alphabetic characters");
 
         let temp_valid = $(".validate").validate({
             rules: {
@@ -20,13 +23,12 @@ function next_step(id_old, id_next) {
                     required: true,
                     minlength: 2,
                     digits: false,
-                    selectnic: true
+                    letteronly: true,
                 },
                 surname: {
                     required: true,
                     minlength: 2,
                     digits: false,
-                    selectnic: true
                 },
                 email: {
                     required: true,
@@ -36,7 +38,7 @@ function next_step(id_old, id_next) {
             messages: {
                 name: {
                     required: "Please specify your name",
-                    selectnic: "22222222222222",
+                    letteronly: "22222222222222",
                 },
                 surname: {
                     required: "We need your email address to contact you",
