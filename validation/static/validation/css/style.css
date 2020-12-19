@@ -1,15 +1,22 @@
-body {
-    background: #545151;
+
+input.error {
+    border: 1px solid #ff0000;
+}
+
+label.error {
+    color: #ff0000;
+    font-weight: normal;
 }
 
 .jumbotron {
     background-color: #9100FE;
+    margin-bottom: 3rem;
     padding: 0;
     color: white;
 }
 
 .first_ {
-    background-color: #41b783;
+    background-color: #0A4027;
     font-size: 1.5vmax;
     font-weight: bold;
 }
@@ -62,6 +69,7 @@ html {
 }
 
 body {
+    background: #545151;
     height: 100%;
 }
 

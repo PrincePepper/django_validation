@@ -6,77 +6,78 @@
 {% block jumbotron %}
     <div class="jumbotron">
         <h1 class="display-1">Привет, Друг!</h1>
-        <p class="lead">Работа с <kbd class="first_">vue.js</kbd> и <kbd class="second_">form</kbd></p>
+        <p class="lead">Работа с <kbd class="first_">Django</kbd> и <kbd class="second_">form</kbd></p>
     </div>
 {% endblock %}
 
 {% block content %}
     <div>
-        <form novalidate class="validate">
-            <div class="alert alert-success" role="alert">
+        <form class="validate">
+            <div id="alert" class="alert alert-success" role="alert" style="display: none">
                 Вы успешно зарегистрировались!
             </div>
 
-            <div id="step-1" class="needs-validation ">
+            <div id="step-1" class="needs-validation">
                 <div class="form-group">
                     <label for="name">Ваше имя</label>
-                    <input id="name" type="text" name="name" class="name form-control" required/>
+                    <input id="name" type="text" name="name" class="form-control" autofocus="autofocus"/>
                 </div>
 
                 <div class="form-group">
                     <label for="surname">Ваша фамилия</label>
-                    <input id="surname" type="text" name="surname" class="name form-control" required/>
+                    <input id="surname" type="text" name="surname" class="form-control"/>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                           required>
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                        else.</small>
+                    <input id="email" type="email" name="email" class="form-control" aria-describedby="emailHelp"/>
+                    <small id="emailHelp" class="form-text text-muted">Мы никогда никому не передадим вашу электронную
+                        почту.</small>
                 </div>
 
                 <div class="form-group">
                     <label for="year">Год рождения</label>
-                    <select id="year" class="custom-select" required>
+                    <select id="year" class="custom-select">
                         <option disabled value="">Выберите</option>
                     </select>
                 </div>
 
-                <button id="btn-step1" class="btn btn-primary" type="button" onclick="next_step('step-1','step-2')">
+                <button id="btn-step1" class="btn btn-primary" type="button"
+                        onclick="next_step('step-1','step-2')">
                     Следующий шаг
                 </button>
             </div>
-            {#style="display: none"#}
-            <div id="step-2">
+
+            <div id="step-2" style="display: none">
                 <div class="form-group">
                     <label for="career">Профессия</label>
-                    <input id="career" class="form-control" placeholder="Например, Frontend" type="text" required>
+                    <input id="career" type="text" name="career" class="form-control" placeholder="Например, Frontend">
                 </div>
 
                 <div class="form-group">
-                    <label for="career">Описание</label>
-                    <label><textarea placeholder="О себе"></textarea></label>
+                    <label for="description">Описание</label>
+                    <label class=""><textarea placeholder="О себе" id="description"
+                                              name="description"></textarea></label>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Пароль</label>
-                    <input id="password" class="form-control" type="text" required>
-                    <small id="passwordHelpInline" class="text-muted">Must be 8-20 characters long.</small>
+                    <input id="password" type="text" name="password" class="form-control">
+                    <small id="passwordHelpInline" class="text-muted">Должно быть 8-20 символов.</small>
                 </div>
 
                 <div class="form-group">
                     <label for="passwordConfirm">Подтверждение пароля</label>
-                    <input id="passwordConfirm" class="form-control" type="text" required>
+                    <input id="passwordConfirm" type="text" name="passwordConfirm" class="form-control">
                 </div>
+
                 <button id="btn-return" class="btn btn-light mr-2" type="button"
                         onclick="return_step('step-2','step-1')">Назад
                 </button>
-                <button id="btn-step2" class="btn btn-primary" type="submit">Зарегистрироваться</button>
+                <button id="submit" class="btn btn-primary" type="button" onclick="submit_step()">Зарегистрироваться
+                </button>
 
             </div>
-
-
         </form>
     </div>
 
@@ -84,7 +85,99 @@
         for (let temp = 2020; temp >= 1980; temp--) {
             $('#year').append('<option value="">' + temp + '</option>');
         }
+
+        $.validator.addMethod("letteronly", function (value, element) {
+            let regex = new RegExp("^[A-Za-zА-Яа-яЁё]+$");
+            return regex.test(value);
+
+        }, "используейте только буквы");
+
+        $.validator.addMethod("password", function (value, element) {
+            let regex = new RegExp("(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$");
+
+            return regex.test(value);
+
+        }, "пароль должен состоять из строчных, прописных букв, цифр, спецсимволов.");
+
+        $("#passwordConfirm").on("keyup", function () { // Выполняем скрипт при изменении содержимого 2-го поля
+
+            let value_input1 = $("#password").val(); // Получаем содержимое 1-го поля
+            let value_input2 = $(this).val(); // Получаем содержимое 2-го поля
+
+            if (value_input1 !== value_input2) { // Условие, если поля не совпадают
+                $("#submit").attr("disabled", "disabled"); // Запрещаем отправку формы
+
+            } else { // Условие, если поля совпадают
+                $("#submit").removeAttr("disabled");  // Разрешаем отправку формы
+
+            }
+
+        });
+
+        let form = document.getElementsByClassName('needs-validation');
+        Array.prototype.filter.call(form, function () {
+            validator = $(".validate").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 2,
+                        letteronly: true
+                    },
+                    surname: {
+                        required: true,
+                        minlength: 2,
+                        letteronly: true
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    career: {
+                        required: true,
+                        letteronly: true
+                    },
+                    description: {
+                        maxlength: 150,
+                    },
+                    password: {
+                        required: true,
+                        minlength: 8,
+                        password: true,
+                    },
+                    passwordConfirm: {
+                        required: true,
+                        minlength: 8,
+                        password: true,
+                    }
+
+                },
+                messages: {
+                    name: {
+                        required: "Пожалуйста заполните поле",
+                        minlength: "Введите хотя бы 2 буквы"
+                    },
+                    surname: {
+                        required: "Пожалуйста заполните поле",
+                        minlength: "Введите хотя бы 2 буквы"
+                    },
+                    email: {
+                        required: "Пожалуйста заполните поле",
+                        email: "Ваш адрес электронной почты должен быть в формате name@domain.com."
+                    },
+                    career: "Пожалуйста заполните поле",
+                    password: {
+                        required: "Пожалуйста заполните поле",
+                        minlength: "Минимум 8 символов"
+                    },
+                    passwordConfirm: {
+                        required: "Пожалуйста заполните поле",
+                        minlength: "Минимум 8 символов"
+                    }
+                }
+            })
+        });
     </script>
+
 {% endblock %}
 
 {% block footer %}
