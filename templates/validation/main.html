@@ -12,85 +12,79 @@
 
 {% block content %}
     <div>
-        <form novalidate>
+        <form novalidate class="validate">
             <div class="alert alert-success" role="alert">
                 Вы успешно зарегистрировались!
             </div>
 
-            <div id="step-1">
+            <div id="step-1" class="needs-validation ">
                 <div class="form-group">
                     <label for="name">Ваше имя</label>
-                    <input id="name" class="form-control" type="text">
-                    <div class="invalid-feedback">{{ reqText }}</div>
-                    <div class="invalid-feedback">{{ alphaText }}</div>
+                    <input id="name" type="text" name="name" class="name form-control" required/>
                 </div>
 
                 <div class="form-group">
                     <label for="surname">Ваша фамилия</label>
-                    <input id="surname" class="form-control" type="text">
-                    <div class="invalid-feedback">{{ reqText }}</div>
-                    <div class="invalid-feedback">{{ alphaText }}</div>
+                    <input id="surname" type="text" name="surname" class="name form-control" required/>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" class="form-control" type="text">
-                    <div class="invalid-feedback">{{ reqText }}</div>
-                    <div class="invalid-feedback">Пожалуйста введите Email адрес</div>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                           required>
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                        else.</small>
                 </div>
+
+                <div class="form-group">
+                    <label for="year">Год рождения</label>
+                    <select id="year" class="custom-select" required>
+                        <option disabled value="">Выберите</option>
+                    </select>
+                </div>
+
+                <button id="btn-step1" class="btn btn-primary" type="button" onclick="next_step('step-1','step-2')">
+                    Следующий шаг
+                </button>
             </div>
-            <div class="form-group">
-                <label for="year">Год рождения</label>
-
-                <select id="year" class="custom-select">
-                    <option disabled value="">Выберите</option>
-                </select>
-
-                <div class="invalid-feedback">{{ reqText }}</div>
-            </div>
-
-            <button id="btn-step1" class="btn btn-primary" type="button" onclick="toggle_visibility('step-1',true)">
-                Следующий шаг
-            </button>
+            {#style="display: none"#}
             <div id="step-2">
                 <div class="form-group">
                     <label for="career">Профессия</label>
-                    <input id="career" class="form-control" placeholder="Например, Frontend" type="text">
-                    <div class="invalid-feedback">{{ alphaText }}</div>
+                    <input id="career" class="form-control" placeholder="Например, Frontend" type="text" required>
                 </div>
 
                 <div class="form-group">
                     <label for="career">Описание</label>
-                    <label>
-                        <textarea placeholder="О себе"></textarea>
-                    </label>
-                    <div class="invalid-feedback">{{ reqText }}</div>
+                    <label><textarea placeholder="О себе"></textarea></label>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Пароль</label>
-                    <input id="password" class="form-control" type="text">
-
-                    <div class="invalid-feedback">{{ reqText }}</div>
-                    <div class="invalid-feedback">{{ minLengthText }}
-                    </div>
+                    <input id="password" class="form-control" type="text" required>
+                    <small id="passwordHelpInline" class="text-muted">Must be 8-20 characters long.</small>
                 </div>
 
                 <div class="form-group">
                     <label for="passwordConfirm">Подтверждение пароля</label>
-
-                    <input id="passwordConfirm" class="form-control" type="text">
-
-                    <div class="invalid-feedback">{{ passwordConfirmText }}
-                    </div>
+                    <input id="passwordConfirm" class="form-control" type="text" required>
                 </div>
+                <button id="btn-return" class="btn btn-light mr-2" type="button"
+                        onclick="return_step('step-2','step-1')">Назад
+                </button>
+                <button id="btn-step2" class="btn btn-primary" type="submit">Зарегистрироваться</button>
+
             </div>
 
-            <button class="btn btn-light mr-2" type="button">Назад</button>
-            <button id="btn-step2" class="btn btn-primary" type="submit">Зарегистрироваться</button>
 
         </form>
     </div>
+
+    <script>
+        for (let temp = 2020; temp >= 1980; temp--) {
+            $('#year').append('<option value="">' + temp + '</option>');
+        }
+    </script>
 {% endblock %}
 
 {% block footer %}
