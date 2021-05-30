@@ -25,7 +25,7 @@ SECRET_KEY = 'yiqk)+xp1gw1(btq+tj^^wx$lr7f&=5qbdw@l_c)%1rzy$v1)!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ssereda.herokuapp']
+ALLOWED_HOSTS = ['ssereda.herokuapp.com']
 
 # Application definition
 
